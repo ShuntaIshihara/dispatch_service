@@ -37,16 +37,20 @@
 //	}
 
 /* 第三引数が正しいかチェックする */
-//	if(check_seed(argv[3])){
-//		fputs("seed is not correct: seed > 0\n", stderr);
+//	seed = atoi(argv[3]);
+//	if(seed < 1 && seed > RAND_MAX){
+//		fputs("seed is not correct: 1 <= seed <= RAND_MAX(>= 32767)\n", stderr);
 //		exit(1);
 //	}
 
+/* [filename]で指定したファイルに書き込む */
 //	FILE *fp;
 //	fp = fopen(argv[1], "w");
 
-/* コマンドライン引数をそれぞれ数字に変換して変数を初期化 */
-//	NoV = rand() % 200 + 200; 
+/* [seed]と[case_type]から頂点と辺の数を決める */
+//	srand((unsigned) seed);
+//	if (argv[2] == '1') NoV = rand() % 200 + 200;
+//	else NoV = 400; 
 //	NoE = NoV * 2 / (rand() % 2 + 3);
 
 /* 頂点の生成 */
