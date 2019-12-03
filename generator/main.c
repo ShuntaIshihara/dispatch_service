@@ -8,7 +8,7 @@
 //typedef struct {
 //	double x;
 //	double y;
-//	int degree = 0;
+//	int degree;
 //} Vertex;
 //
 //typedef struct {
@@ -56,6 +56,21 @@
 /* 頂点の生成 */
 /* |V| = R^2 + r を満たす最大の非負整数Rを見つける(ただしrも非負整数) */
 //	R = max_square(NoV)
+/* 頂点vを宣言して初期化する*/
+//	Vertex v[NoV];
+//	init_v(v, NoV);
+/* 頂点の場所を調整する */
+//	adj_v(v);
+
+/* 高速道路の生成 */
+//	Edge e[NoE];
+//	highway(v, e);
+
+/* その他の道路の生成 */
+//	general_road(v, e);
+
+/* 注文の決定 */
+//	oder();	
 
 //	fclose(fp);
 
