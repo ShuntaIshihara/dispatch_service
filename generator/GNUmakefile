@@ -2,8 +2,8 @@
 OBJS = \
 main.o \
 check_filename.o \
-max_square.o 
-#init_v.o \
+max_square.o \
+init_v.o 
 #adj_v.o \
 #highway.o \
 #general_road.o \
@@ -19,13 +19,18 @@ generator: $(OBJS)
 main.o: main.c
 	gcc -c $< 
 
-main.o: main.h
+main.o: main.h struct.h
 
 check_filename.o: check_filename.c
 	gcc -c $<
 
 max_square.o: max_square.c
 	gcc -c $<
+
+init_v.o: init_v.c
+	gcc -c $<
+
+init_v.o: struct.h
 
 .PHONY: clean
 clean:

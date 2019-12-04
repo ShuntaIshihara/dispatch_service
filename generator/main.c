@@ -5,17 +5,8 @@
 
 //#define MAXDEGREE 5
 
-typedef struct {
-	double x;
-	double y;
-	int degree;
-} Vertex;
-
-typedef struct {
-	int v;
-	int u;
-	int d;
-} Edge;
+/* struct.hには構造体の宣言がされている */
+#include "struct.h"
 
 /* main.hには関数のプロトタイプ宣言をまとめてある */
 #include "main.h"
@@ -63,10 +54,11 @@ int main(int argc, char *argv[]){
 /* 頂点の生成 */
 /* |V| = R^2 + r を満たす最大の非負整数Rを見つける(ただしrも非負整数) */
 	int R = max_square(NoV);
-	printf("%d\n", R);
+
 /* 頂点vを宣言して初期化する*/
-//	Vertex v[NoV];
-//	init_v(v, NoV);
+	Vertex v[NoV];
+	init_v(v, NoV);
+
 /* 頂点の場所を調整する */
 //	adj_v(v);
 
