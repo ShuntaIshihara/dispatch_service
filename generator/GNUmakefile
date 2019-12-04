@@ -1,8 +1,8 @@
 # Makefile for generator
 OBJS = \
 main.o \
-check_filename.o
-#max_square.o \
+check_filename.o \
+max_square.o 
 #init_v.o \
 #adj_v.o \
 #highway.o \
@@ -22,6 +22,9 @@ main.o: main.c
 main.o: main.h
 
 check_filename.o: check_filename.c
+	gcc -c $<
+
+max_square.o: max_square.c
 	gcc -c $<
 
 .PHONY: clean

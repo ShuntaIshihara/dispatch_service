@@ -53,16 +53,17 @@ int main(int argc, char *argv[]){
 
 /* [seed]と[case_type]から頂点と辺の数を決める */
 	srand((unsigned) seed);
-	int NoV = 0, NoE = 0;
+	int NoV = 0;
 	if (type == 1) NoV = rand() % 200 + 200;
 	else NoV = 400; 
-	NoE = (rand()%101 + 300) * NoV / 200;
+	int NoE = (rand()%101 + 300) * NoV / 200;
 
 	printf("NoV: %d\nNoE: %d\n", NoV, NoE);
 
 /* 頂点の生成 */
 /* |V| = R^2 + r を満たす最大の非負整数Rを見つける(ただしrも非負整数) */
-//	R = max_square(NoV)
+	int R = max_square(NoV);
+	printf("%d\n", R);
 /* 頂点vを宣言して初期化する*/
 //	Vertex v[NoV];
 //	init_v(v, NoV);
@@ -79,7 +80,7 @@ int main(int argc, char *argv[]){
 /* 注文の決定 */
 //	oder();	
 
-//	fclose(fp);
+	fclose(fp);
 
 	return 0;
 }
