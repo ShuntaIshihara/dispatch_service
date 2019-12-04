@@ -26,4 +26,4 @@ check_filename.o: check_filename.c
 
 .PHONY: clean
 clean:
-	rm -rf main main.o
+	rm -rf generator $(OBJS)

@@ -5,17 +5,17 @@
 
 //#define MAXDEGREE 5
 
-//typedef struct {
-//	double x;
-//	double y;
-//	int degree;
-//} Vertex;
-//
-//typedef struct {
-//	int v;
-//	int u;
-//	int d;
-//} Edge;
+typedef struct {
+	double x;
+	double y;
+	int degree;
+} Vertex;
+
+typedef struct {
+	int v;
+	int u;
+	int d;
+} Edge;
 
 /* main.hには関数のプロトタイプ宣言をまとめてある */
 #include "main.h"

@@ -7,11 +7,11 @@ int check_filename(char argv[]){
 	for (i = length-1; i >= length-4; i--){
 		switch (length - i){
 			case 1:
-			case 3: if (argv[1][i] != 't') return 1;
+			case 3: if (argv[i] != 't') return 1;
 					break;
-			case 2: if (argv[1][i] != 'x') return 1;
+			case 2: if (argv[i] != 'x') return 1;
 					break;
-			case 4: if (argv[1][i] != '.') return 1;
+			case 4: if (argv[i] != '.') return 1;
 					break;
 			default: break;
 		}
