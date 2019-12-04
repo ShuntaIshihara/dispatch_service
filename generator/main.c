@@ -49,18 +49,16 @@ int main(int argc, char *argv[]){
 	else NoV = 400; 
 	int NoE = (rand()%101 + 300) * NoV / 200;
 
-	printf("NoV: %d\nNoE: %d\n", NoV, NoE);
-
 /* 頂点の生成 */
 /* |V| = R^2 + r を満たす最大の非負整数Rを見つける(ただしrも非負整数) */
 	int R = max_square(NoV);
 
 /* 頂点vを宣言して初期化する*/
 	Vertex v[NoV];
-	init_v(v, NoV);
+	init_v(v, NoV, R);
 
 /* 頂点の場所を調整する */
-//	adj_v(v);
+	adj_v(v, seed, NoV);
 
 /* 高速道路の生成 */
 //	Edge e[NoE];
