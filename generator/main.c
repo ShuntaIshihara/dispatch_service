@@ -48,14 +48,17 @@ int main(int argc, char *argv[]){
 	}
 
 /* [filename]で指定したファイルに書き込む */
-//	FILE *fp;
-//	fp = fopen(argv[1], "w");
+	FILE *fp;
+	fp = fopen(argv[1], "w");
 
 /* [seed]と[case_type]から頂点と辺の数を決める */
-//	srand((unsigned) seed);
-//	if (argv[2] == '1') NoV = rand() % 200 + 200;
-//	else NoV = 400; 
-//	NoE = NoV * 2 / (rand() % 2 + 3);
+	srand((unsigned) seed);
+	int NoV = 0, NoE = 0;
+	if (type == 1) NoV = rand() % 200 + 200;
+	else NoV = 400; 
+	NoE = (rand()%101 + 300) * NoV / 200;
+
+	printf("NoV: %d\nNoE: %d\n", NoV, NoE);
 
 /* 頂点の生成 */
 /* |V| = R^2 + r を満たす最大の非負整数Rを見つける(ただしrも非負整数) */
