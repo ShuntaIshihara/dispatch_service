@@ -4,8 +4,8 @@ main.o \
 check_filename.o \
 max_square.o \
 init_v.o \
-adj_v.o 
-#highway.o \
+adj_v.o \
+highway.o \
 #general_road.o \
 #oder.o \
 
@@ -32,6 +32,10 @@ init_v.o: init_v.c
 
 adj_v.o: adj_v.c
 	gcc -c $<
+
+highway.o: highway.c
+	gcc -c $<
+
 .PHONY: clean
 clean:
 	rm -rf generator $(OBJS)

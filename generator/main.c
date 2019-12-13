@@ -61,8 +61,8 @@ int main(int argc, char *argv[]){
 	adj_v(v, seed, NoV);
 
 /* 高速道路の生成 */
-//	Edge e[NoE];
-//	highway(v, e);
+	Edge e[NoE];
+	highway(v, e, NoV);
 
 /* その他の道路の生成 */
 //	general_road(v, e);
