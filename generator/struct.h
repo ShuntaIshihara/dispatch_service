@@ -7,6 +7,6 @@ typedef struct {
 typedef struct {
 	int v;
 	int u;
-	int d;
+	double d;
 } Edge;
 
