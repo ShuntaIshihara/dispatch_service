@@ -60,12 +60,10 @@ int main(int argc, char *argv[]){
 /* 頂点の場所を調整する */
 	adj_v(v, seed, NoV);
 
-/* 高速道路の生成 */
+/* 道路の作成 */
 	Edge e[NoE];
-	highway(v, e, NoV);
+	road(v, e, NoV, NoE);
 
-/* その他の道路の生成 */
-//	general_road(v, e);
 
 /* 注文の決定 */
 //	oder();	
