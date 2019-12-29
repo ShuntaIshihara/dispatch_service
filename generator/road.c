@@ -97,7 +97,9 @@ void general_road(Binary *root, Edge e[], Vertex v[], int NoV, int NoE){
 		/*コストの値が一番小さいインデックスを探す*/
 		int index = min_search(cost);
 		/*辺に代入していく*/
-		e[NoV-1+i] = cg[index];
+		e[NoV-1+i].v = cg[index].v;
+		e[NoV-1+i].u = cg[index].u;
+		e[NoV-1+i].d = cg[index].d * 4;
 		/*選ばれた頂点の次数を増やす*/
 		v[cg[index].v].degree += 1;
 		v[cg[index].u].degree += 1;
@@ -238,3 +240,4 @@ void road(Vertex v[], Edge e[], int NoV, int NoE){
 	general_road(root, e, v, NoV, NoE);
 	free(root);
 }
+

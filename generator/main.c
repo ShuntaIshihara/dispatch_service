@@ -2,14 +2,22 @@
 /* 入力はコマンドライン引数で受け取る */
 #include <stdio.h>
 #include <stdlib.h>
-
-//#define MAXDEGREE 5
+#include <math.h>
 
 /* struct.hには構造体の宣言がされている */
 #include "struct.h"
 
 /* main.hには関数のプロトタイプ宣言をまとめてある */
 #include "main.h"
+
+#define Tmax 10000
+
+typedef struct stack{
+	int s;
+	int g;
+	int id;
+	struct stack *next;
+}Stack;
 
 int main(int argc, char *argv[]){
 /* コマンドライン引数の数が正しいかチェックする */
@@ -64,9 +72,76 @@ int main(int argc, char *argv[]){
 	Edge e[NoE];
 	road(v, e, NoV, NoE);
 
+	int i;
+	for(i = 0; i < NoE; i++){
+		int dis = (int)e[i].d;
+		if(dis == 0) dis = 1;
+		fprintf(fp, "%d %d %d\n", e[i].v, e[i].u, dis);
+	}
+
 
 /* 注文の決定 */
-//	oder();	
+	
+	/*注文頻度の決定*/
+	int frequency[NoV];
+	for(i = 0; i < NoV; i++){
+		frequency[i] = 1;
+	}
+	int cx = R/4+rand()%(R/2);
+	int cy = R/4+rand()%(R/2);
+
+	int w;
+	int h;
+	int dis;
+	for(i = 0; i < NoV; i++){
+		w = v[i].x - cx;
+		h = v[i].y - cy;
+		dis = (int)sqrt(w*w + h*h);
+		if(dis <= R/8 + rand()%(R/8)) frequency[i] = 2;
+	}
+
+	/*重みの総和*/
+	int weight = 0;
+	for(i = 0; i < NoV; i++){
+		weight += frequency[i];
+	}
+
+	/*注文の抽選*/
+	int last = Tmax * 95 / 100;
+	int peak = rand() % last;
+	int t;
+	int r;
+	int count = 0;
+	int id = 0;
+	for(t = 0; t < Tmax; t++){
+		r = rand()%100;
+		count = 0;
+		Stack *head;
+		head = NULL;
+		if(r < poder(t, last, peak)){
+			for(i = 0; i < NoV; i++){
+				if(rand()%weight < frequency[i]){
+					int g = rand()%NoV;
+					if(i == g) continue;
+					Stack *cell;
+					cell = (Stack*)malloc(sizeof(Stack));
+					cell->s = i;
+					cell->g = g;
+					cell->id = id;
+					id++;
+					count++;
+					cell->next = head;
+					head = cell;	
+				}
+			}
+		}
+		fprintf(fp, "%d\n", count);
+		while(head != NULL){
+			fprintf(fp, "%d %d %d\n", head->s, head->g, head->id);
+			head = head->next;
+		}
+		free(head);
+	}
 
 	fclose(fp);
 

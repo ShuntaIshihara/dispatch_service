@@ -6,7 +6,7 @@ max_square.o \
 init_v.o \
 adj_v.o \
 road.o \
-#oder.o \
+poder.o 
 
 
 .PHONY: all
@@ -33,6 +33,9 @@ adj_v.o: adj_v.c
 	gcc -c $<
 
 road.o: road.c
+	gcc -c $<
+
+poder.o: poder.c
 	gcc -c $<
 
 .PHONY: clean
