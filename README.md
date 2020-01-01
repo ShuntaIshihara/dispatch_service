@@ -8,5 +8,5 @@ generator/
 テストケースの作り方  
 ~~~
 $ make  
-$ ./generator \[filename\] \[casetype\] \[seed\]  
-~~
+$ ./generator [filename] [casetype] [seed]  
+~~~
