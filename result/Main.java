@@ -66,6 +66,9 @@ class Main {
 
 			//|V| = R^2 + rとなるRの確認用
 			System.out.println("R = " + R);
+			
+			Vehicle[] car;
+			car = new Vehicle[20];
 
 		}catch(FileNotFoundException e){
 			System.err.println("The file which you specified doesn't exsit. e:" + e);
