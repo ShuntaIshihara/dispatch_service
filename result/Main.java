@@ -1,67 +1,7 @@
 import java.io.*;
-
-class Edges {
-	int[] u;
-	int[] d;
-
-	Edges(){
-		u = new int[5];
-		d = new int[5];
-		for(int i = 0; i < 5; i++){
-			u[i] = -1;
-			d[i] = -1;
-		}
-	}
-
-	void append(int v, int dis){
-		try{
-			int i;
-			for(i = 0; u[i] != -1; i++);
-			u[i] = v;
-			d[i] = dis;
-		}catch(ArrayIndexOutOfBoundsException e){
-			System.err.println("degree is over 5. e:"+ e);
-		}
-	}
-}
-
-//st[i].time[j]:頂点iから頂点jまでの最短時間
-//st[i].route[j]:頂点iから頂点jまでの最短経路
-class Shortest {
-	int[] time;
-	StringBuffer[] route;
-
-	Shortest(int V){
-		time = new int[V];
-		route = new StringBuffer[V];
-		for(int i = 0; i < V; i++){
-			time[i] = Integer.MAX_VALUE;
-			route[i] = new StringBuffer("");
-		}
-	}
-
-	void reverse(int i){
-		int f = route[i].indexOf(", ", 0);
-		int l = route[i].lastIndexOf(", ", route[i].length());
-		int nf, nl;
-		String fs, ls;
-		while(true){
-			if(f >= l) break;
-			nf = route[i].indexOf(", ", f+1);
-			nl = route[i].indexOf(", ", l+1);
-			if(nf == -1) nf = route[i].length();
-			if(nl == -1) nl = route[i].length();
-
-			fs = route[i].substring(f+2, nf);
-			ls = route[i].substring(l+2, nl);
-
-			route[i].replace(f+2, f+2+fs.length(), ls);
-			route[i].replace(l+2+ls.length()-fs.length(), l+2+ls.length()+ls.length()-fs.length(), fs);
-			f = route[i].indexOf(", ", f+1);
-			l = route[i].lastIndexOf(", ", l+ls.length()-fs.length()-1);
-		}
-	}
-}
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 class Main {
 	static Shortest[] st;
@@ -149,32 +89,94 @@ class Main {
 			for(int i = 0; i < V; i++){
 				make(i, i, 0);
 			}
-			//[, a, b, c, ...]となっているので最初の", "を削除する
+
+//			//shortestの確認用
+//			int sumlen = 0;
+//			int count = 0;
+//			for(int i = 0; i < V; i++){
+//				System.out.println("This point is : " + i);
+//				System.out.println("shortest time list.");
+//				System.out.print("[");
+//				for(int j = 0; j < V; j++)
+//					System.out.print(st[i].time[j] + ", ");
+//				System.out.println("]");
+//				System.out.println("shortest route list.");
+//				for(int j = 0; j < V; j++){
+//					System.out.print("[");
+//					System.out.print(st[i].route[j]);
+//					sumlen += st[i].route[j].length();
+//					System.out.println("]");
+//					count++;
+//				}
+//			}
+//			System.out.println("average = " + (sumlen/count));
+
+			//routeをint型の2次元配列rに変換する。
 			for(int i = 0; i < V; i++){
 				for(int j = 0; j < V; j++){
-					if(st[i].route[j].length() == 0) continue;
-					st[i].route[j].delete(0,2);
+					st[i].convert_str_into_int(j);
 				}
 			}
 
-			//shortestの確認用
-			for(int i = 0; i < V; i++){
-				System.out.println("This point is : " + i);
-				System.out.println("shortest time list.");
-				System.out.print("[");
-				for(int j = 0; j < V; j++)
-					System.out.print(st[i].time[j] + ", ");
-				System.out.println("]");
-				System.out.println("shortest route list.");
-				for(int j = 0; j < V; j++){
-					System.out.print("[");
-					System.out.print(st[i].route[j]);
-					System.out.println("]");
-				}
+			//convert_str_into_intの動作確認用
+//			for(int i = 0; i < V; i++){
+//				for(int j = 0; j < V; j++){
+//					System.out.println("[" + st[i].next[j] + "]");
+//				}
+//			}
+
+
+			Vehicle[] car;
+			car = new Vehicle[20];
+			
+			for(int i = 0; i < 20; i++){
+				car[i] = new Vehicle();
 			}
 
-//			Vehicle[] car;
-//			car = new Vehicle[20];
+			Oder[] oder = new Oder[V];
+			for(int i = 0; i < V; i++){
+				oder[i] = new Oder();
+			}
+
+			int tmax = Integer.parseInt(br.readLine());
+			//tmax確認用
+//			System.out.println(tmax);
+
+			//車の配置をランダムに決める
+			Random_set.set(car, st);
+
+			StringBuffer num = new StringBuffer(args[0]);
+			num.delete(0, 8);
+			num.delete(2, num.length());
+			FileWriter fw = new FileWriter("result"+num+".txt");
+			PrintWriter pw = new PrintWriter(new BufferedWriter(fw));
+
+			for(int t = 0; t < tmax; t++){
+				//注文を読み込む
+				s = br.readLine();
+				int times = Integer.parseInt(s);
+				for(int i = 0; i < times; i++){
+					s = br.readLine();
+					String[] b = s.split(" ");
+					int occur = Integer.parseInt(b[0]);
+					oder[occur].goal.add(Integer.parseInt(b[1]));
+					oder[occur].id.add(Integer.parseInt(b[2]));
+					oder[occur].exist = true;
+				}
+
+				if(times != 0)
+					NomalAllocate.allocate(oder, car, st);
+
+				for(int i = 0; i < car.length; i++){
+					pw.print(car[i].move() + " ");
+					car[i].check(st);
+				}
+				pw.println();
+
+				if(times != 0)
+					Random_set.set(car, st);
+			}
+			pw.close();
 
 		}catch(FileNotFoundException e){
 			System.err.println("The file which you specified doesn't exsit. e:" + e);

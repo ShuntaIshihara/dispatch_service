@@ -1,7 +1,8 @@
 # Make.PHONY: all
 CLASS = \
 Main.class \
-Edges.class
+Edges.class \
+Shortest.class
 
 all: Main
 
