@@ -44,7 +44,7 @@ class Main {
 
 	public static void main(String[] args){
 		try{
-			File f = new File("../test/"+args[0]);
+			File f = new File(args[0]);
 			if(!f.exists()) throw new FileNotFoundException();
 			BufferedReader br = new BufferedReader(new FileReader(f));
 
@@ -70,10 +70,10 @@ class Main {
 			}
 
 			//グラフの情報の読み込み確認用
-			for(int i = 0; i < V; i++){
-				for(int j = 0; j < es[i].u.size(); j++)
-					System.out.println("es["+i+"]: "+es[i].u.get(j)+", "+es[i].d.get(j));
-			}
+//			for(int i = 0; i < V; i++){
+//				for(int j = 0; j < es[i].u.size(); j++)
+//					System.out.println("es["+i+"]: "+es[i].u.get(j)+", "+es[i].d.get(j));
+//			}
 
 			int R;
 			for(R = 0; R*R <= V; R++);
@@ -133,10 +133,7 @@ class Main {
 				car[i] = new Vehicle();
 			}
 
-			Oder[] oder = new Oder[V];
-			for(int i = 0; i < V; i++){
-				oder[i] = new Oder();
-			}
+			List<Oder> oder = new ArrayList<Oder>();
 
 			int tmax = Integer.parseInt(br.readLine());
 			//tmax確認用
@@ -158,21 +155,19 @@ class Main {
 				for(int i = 0; i < times; i++){
 					s = br.readLine();
 					String[] b = s.split(" ");
-					int occur = Integer.parseInt(b[0]);
-					oder[occur].goal.add(Integer.parseInt(b[1]));
-					oder[occur].id.add(Integer.parseInt(b[2]));
-					oder[occur].exist = true;
+					oder.add(new Oder(Integer.parseInt(b[0]), Integer.parseInt(b[1]), Integer.parseInt(b[2])));
 				}
 
-				if(times != 0)
-					NomalAllocate.allocate(oder, car, st);
+				FCFS.allocate(oder, car, st);
 
 				for(int i = 0; i < car.length; i++){
 					int go = car[i].move(st);
-					if(car[i].empty != 0)
+					if(car[i].empty != 0){
 						pw.print(go+" "+car[i].goal+" "+car[i].passenger[0]+" ");
-					else
+					}
+					else{
 						pw.print(go+" -1 -1 ");
+					}
 					car[i].renew(st, go);
 					car[i].check();
 				}

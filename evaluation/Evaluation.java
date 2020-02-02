@@ -5,7 +5,7 @@ class Evaluation {
 	static public void main(String[] args){
 		//グラフの情報を読み込み記憶する
 		try{
-		File f = new File("../test/"+args[0]);
+		File f = new File(args[0]);
 		BufferedReader br = new BufferedReader(new FileReader(f));
 		String str = br.readLine();
 		String[] s = str.split(" ");
@@ -13,7 +13,7 @@ class Evaluation {
 		int E = Integer.parseInt(s[1]);
 
 		//V,E 確認用--------------------------------------------------
-		System.out.println("V = " + V + ", E = " + E);
+//		System.out.println("V = " + V + ", E = " + E);
 		//------------------------------------------------------------
 
 		Edges[] es = new Edges[V];
@@ -40,14 +40,14 @@ class Evaluation {
 		}
 
 		//グラフ情報の確認用-------------------------------------------
-		for(int i = 0; i < V; i++){
-			System.out.print("["+i+"]: ");
-			for(int j = 0; j < es[i].u.size(); j++)
-				System.out.print(es[i].u.get(j)+" "+es[i].d.get(j)+" "+es[i].index.get(j)+", ");
-			System.out.println();
-		}
-		for(int i = 0; i < E; i++)
-			System.out.println("["+i+"]: v = "+e[i].v+", u = "+e[i].u+", d = "+e[i].d);
+//		for(int i = 0; i < V; i++){
+//			System.out.print("["+i+"]: ");
+//			for(int j = 0; j < es[i].u.size(); j++)
+//				System.out.print(es[i].u.get(j)+" "+es[i].d.get(j)+" "+es[i].index.get(j)+", ");
+//			System.out.println();
+//		}
+//		for(int i = 0; i < E; i++)
+//			System.out.println("["+i+"]: v = "+e[i].v+", u = "+e[i].u+", d = "+e[i].d);
 		//-------------------------------------------------------------
 
 		//注文情報を読み込み記憶する
@@ -71,30 +71,31 @@ class Evaluation {
 		}
 
 		//注文情報確認用-----------------------------------------------
-		System.out.println("tmax = " + tmax);
-		for(int i = 0; i < V; i++){
-			System.out.println("["+i+"]: ");
-			for(int j = 0; j < oderlist[i].id.size(); j++){
-				System.out.print("id = "+oderlist[i].id.get(j)+" ");
-				System.out.print("goal = "+oderlist[i].goal.get(j)+" ");
-				System.out.print("time = "+oderlist[i].time.get(j)+" ");
-				System.out.println("done = "+oderlist[i].done.get(j));
-			}
-			System.out.println();
-		}
+//		System.out.println("tmax = " + tmax);
+//		for(int i = 0; i < V; i++){
+//			System.out.println("["+i+"]: ");
+//			for(int j = 0; j < oderlist[i].id.size(); j++){
+//				System.out.print("id = "+oderlist[i].id.get(j)+" ");
+//				System.out.print("goal = "+oderlist[i].goal.get(j)+" ");
+//				System.out.print("time = "+oderlist[i].time.get(j)+" ");
+//				System.out.println("done = "+oderlist[i].done.get(j));
+//			}
+//			System.out.println();
+//		}
 		//-------------------------------------------------------------
 		br.close();
 
 
 		//車の移動情報を読み込む
-		f = new File("../result/"+args[1]);
+		f = new File(args[1]);
 		br = new BufferedReader(new FileReader(f));
 		Car[] car = new Car[20];
 		for(int i = 0; i < car.length; i++)
 			car[i] = new Car();
 
 		//評価スタート
-		int total = 0;
+		long total = 0;
+		int count = 0;
 		for(int t = 0; t < tmax; t++){
 			str = br.readLine();
 			String[] w = str.split(" ");
@@ -105,10 +106,11 @@ class Evaluation {
 					if(car[i].e == null && car[i].current == Integer.parseInt(w[i*3+1])){
 						if(car[i].id == -1){
 							int index = oderlist[car[i].current].id.indexOf(Integer.parseInt(w[i*3+2]));
-							oderlist[car[i].current].done.set(index, true);
 							car[i].id = oderlist[car[i].current].id.get(index);
 							car[i].from = car[i].current;
-							car[i].score = t - oderlist[car[i].current].time.get(index);
+							int wt = t - oderlist[car[i].current].time.get(index);
+							car[i].score = tmax*tmax - wt*wt;
+
 						}
 						else{
 							int index = oderlist[car[i].from].id.indexOf(car[i].id);
@@ -122,7 +124,9 @@ class Evaluation {
 								System.exit(2);
 							}
 							total += car[i].score;
+							count++;
 							System.out.println("id "+car[i].id+": score = "+car[i].score);
+							oderlist[car[i].from].done.set(index, true);
 							car[i].score = 0;
 							car[i].id = -1;
 							car[i].from = -1;
@@ -137,7 +141,9 @@ class Evaluation {
 				}
 			}
 		}
+
 		System.out.println("total = " + total);
+		System.out.println("complete oder = " + count);
 		br.close();
 
 		}catch(FileNotFoundException e){
