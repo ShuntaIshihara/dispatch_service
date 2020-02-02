@@ -70,10 +70,10 @@ class Main {
 			}
 
 			//グラフの情報の読み込み確認用
-//			for(int i = 0; i < V; i++){
-//				for(int j = 0; j < es[i].u.size(); j++)
-//					System.out.println("es["+i+"]: "+es[i].u.get(j)+", "+es[i].d.get(j));
-//			}
+			for(int i = 0; i < V; i++){
+				for(int j = 0; j < es[i].u.size(); j++)
+					System.out.println("es["+i+"]: "+es[i].u.get(j)+", "+es[i].d.get(j));
+			}
 
 			int R;
 			for(R = 0; R*R <= V; R++);
@@ -133,14 +133,43 @@ class Main {
 				car[i] = new Vehicle();
 			}
 
-			List<Oder> oder = new ArrayList<Oder>();
+			Oder[] oder = new Oder[V];
+			for(int i = 0; i < V; i++){
+				oder[i] = new Oder();
+			}
 
 			int tmax = Integer.parseInt(br.readLine());
 			//tmax確認用
 //			System.out.println(tmax);
 
-			//車の配置をランダムに決める
-			Random_set.set(car, st);
+			int[] index_list = new int[V];
+			int[] count_list = new int[V];
+			for(int i = 0; i < V; i++){
+				for(int j = 0; j < V; j++){
+					if(st[i].time[j] <= 10)
+						count_list[i] += 1;
+				}
+				index_list[i] = i;
+			}
+
+			for(int i = 0; i < V; i++){
+				int max = count_list[i];
+				int index = 0;
+				for(int j = i; j < V; j++){
+					if(max < count_list[j]){
+						max = count_list[j];
+						index = j;
+					}
+				}
+				int wi = i;
+				int wc = count_list[i];
+				index_list[i] = index;
+				count_list[i] = count_list[index];
+				index_list[index] = wi;
+				count_list[index] = wc; 
+			}
+
+			DistanceSet.set(car, st, index_list, count_list);
 
 			StringBuffer num = new StringBuffer(args[0]);
 			int n = num.lastIndexOf(".txt");
@@ -156,25 +185,26 @@ class Main {
 				for(int i = 0; i < times; i++){
 					s = br.readLine();
 					String[] b = s.split(" ");
-					oder.add(new Oder(Integer.parseInt(b[0]), Integer.parseInt(b[1]), Integer.parseInt(b[2])));
+					int occur = Integer.parseInt(b[0]);
+					oder[occur].goal.add(Integer.parseInt(b[1]));
+					oder[occur].id.add(Integer.parseInt(b[2]));
+					oder[occur].exist = true;
 				}
 
-				FCFS.allocate(oder, car, st);
+				NomalAllocate.allocate(oder, car, st);
 
 				for(int i = 0; i < car.length; i++){
 					int go = car[i].move(st);
-					if(car[i].empty != 0){
+					if(car[i].empty != 0)
 						pw.print(go+" "+car[i].goal+" "+car[i].passenger[0]+" ");
-					}
-					else{
+					else
 						pw.print(go+" -1 -1 ");
-					}
 					car[i].renew(st, go);
 					car[i].check();
 				}
 				pw.println();
 
-				Random_set.set(car, st);
+				DistanceSet.set(car, st, index_list, count_list);
 			}
 			pw.close();
 

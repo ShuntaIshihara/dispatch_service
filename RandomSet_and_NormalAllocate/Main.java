@@ -146,9 +146,10 @@ class Main {
 			Random_set.set(car, st);
 
 			StringBuffer num = new StringBuffer(args[0]);
-			num.delete(0, 8);
+			int n = num.lastIndexOf(".txt");
+			num.delete(0, n-2);
 			num.delete(2, num.length());
-			FileWriter fw = new FileWriter("result.txt");
+			FileWriter fw = new FileWriter("result"+num+".txt");
 			PrintWriter pw = new PrintWriter(new BufferedWriter(fw));
 
 			for(int t = 0; t < tmax; t++){
@@ -177,8 +178,7 @@ class Main {
 				}
 				pw.println();
 
-				if(times != 0)
-					Random_set.set(car, st);
+				Random_set.set(car, st);
 			}
 			pw.close();
 
