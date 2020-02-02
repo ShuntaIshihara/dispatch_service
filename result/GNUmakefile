@@ -2,7 +2,10 @@
 CLASS = \
 Main.class \
 Edges.class \
-Shortest.class
+Shortest.class \
+Vehicle.class \
+Random_set.class \
+NomalAllocate.class
 
 all: Main
 

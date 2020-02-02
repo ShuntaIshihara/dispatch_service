@@ -1,67 +1,57 @@
 class Vehicle {
 	//current 現在地, road 点にいる場合0 移動してる場合移動した距離
-	int current;
-	int road;
-	int next;
+	int s;
+	int sd;
+	int n;
+	int nd;
 	int goal;
-	//guest[0]: 客のid, guest[1]: 客の目的地
-	int[] guest;
+	//passenger[0]: 客のid, passenger[1]: 客の目的地
+	int[] passenger;
 	//empty 0:空車 1:迎車 2:使用中
 	int empty;
 
 	Vehicle(){
-		current = 0;
-		road = 0;
-		next = 0;
+		s = 0;
+		sd = 0;
+		n = 0;
+		nd = 0;
 		goal = 0;
-		guest = new int[2];
-		guest[0] = -1;
-		guest[1] = 0;
+		passenger = new int[2];
+		passenger[0] = -1;
+		passenger[1] = 0;
 		empty = 0;
 	}
 
-	int move(){
-		//次に向かう場所に１つ進めて情報を更新する
-		if(road == 0) return next;
+	int move(Shortest[] st){
+		if(s == n) return st[s].next[goal];
 
-		road--;
-		return next;
+		if(st[s].time[goal] + sd < st[n].time[goal] + nd)
+			return s;
+		return n;
 	}
 
-	void set(Shortest[] st){
-		if(road <= 0){
-			next = st[current].next[goal];
-			road = st[current].time[next];
+	void renew(Shortest[] st, int go){
+		if(s == n){
+			n = go;
+			nd = st[s].time[n];
 		}
-		else{
-			if(st[current].time[goal] + st[next].time[current] - road < st[next].time[goal] + road){
-				road = st[next].time[current] - road;
-				next = current;
-			}
-		}
+
+		if(go == s){sd--; nd++;}
+		if(go == n){sd++; nd--;}
+
+		if(sd == 0){n = s; nd = 0;}
+		if(nd == 0){s = n; sd = 0;}
 	}
 
-	void check(Shortest[] st){
-		//車が次の頂点に着いたとき、次の行動を決定する
-		//頂点にいるとき
-		if(road <= 0){
-			current = next;
-			//目的地に着いたとき
-			if(current == goal){
-				//客を乗せるとき
-				if(empty == 1){
-					empty = 2;
-					goal = guest[1];
-				}
-				//客を下ろすとき
-				else if(empty == 2){
-					empty = 0;
-					guest[0] = -1;
-					guest[1] = 0;
-				}
+	void check(){
+		if(s == goal && s == n){
+			if(empty == 2){
+				empty = 0;
 			}
-			next = st[current].next[goal];
-			road = st[current].time[next];
+			else if(empty == 1){
+				empty = 2;
+				goal = passenger[1];
+			}
 		}
 	}
 }

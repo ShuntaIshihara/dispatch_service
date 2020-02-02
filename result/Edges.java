@@ -1,22 +1,19 @@
+import java.util.List;
+import java.util.ArrayList;
+
 class Edges {
-	int[] u;
-	int[] d;
+	List<Integer> u;
+	List<Integer> d;
 
 	Edges(){
-		u = new int[5];
-		d = new int[5];
-		for(int i = 0; i < 5; i++){
-			u[i] = -1;
-			d[i] = -1;
-		}
+		u = new ArrayList<Integer>();		
+		d = new ArrayList<Integer>();
 	}
 
 	void append(int v, int dis){
 		try{
-			int i;
-			for(i = 0; u[i] != -1; i++);
-			u[i] = v;
-			d[i] = dis;
+			u.add(v);
+			d.add(dis);
 		}catch(ArrayIndexOutOfBoundsException e){
 			System.err.println("degree is over 5. e:"+ e);
 		}

@@ -10,8 +10,7 @@ class Random_set {
 			if(car[i].empty == 0){
 				do{
 					car[i].goal = rnd.nextInt(st.length);
-				}while(car[i].goal == car[i].current);
-				car[i].set(st);
+				}while(car[i].goal == car[i].s);
 			}
 		}
 	}

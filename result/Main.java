@@ -14,9 +14,9 @@ class Main {
 		//行き先が自分の頂点であるときの時間は0にする
 		if(current == point) st[current].time[point] = 0;
 		
-		for(int i = 0; i < 5 && es[point].u[i] != -1; i++){
-			int p = es[point].u[i];
-			int d = es[point].d[i];
+		for(int i = 0; i < es[point].u.size(); i++){
+			int p = es[point].u.get(i);
+			int d = es[point].d.get(i);
 			if(st[current].time[p] > t+d){
 				st[current].time[p] = t+d;
 				st[p].time[current] = t+d;
@@ -37,8 +37,8 @@ class Main {
 			}
 		}
 
-		for(int i = 0; i < 5 && es[point].u[i] != -1; i++){
-			make(current, es[point].u[i], t+es[point].d[i]);
+		for(int i = 0; i < es[point].u.size(); i++){
+			make(current, es[point].u.get(i), t+es[point].d.get(i));
 		}
 	}
 
@@ -71,8 +71,8 @@ class Main {
 
 			//グラフの情報の読み込み確認用
 			for(int i = 0; i < V; i++){
-				for(int j = 0; j < 5 && es[i].u[j] != -1; j++)
-					System.out.println("es["+i+"]: "+es[i].u[j]+", "+es[i].d[j]);
+				for(int j = 0; j < es[i].u.size(); j++)
+					System.out.println("es["+i+"]: "+es[i].u.get(j)+", "+es[i].d.get(j));
 			}
 
 			int R;
@@ -168,8 +168,13 @@ class Main {
 					NomalAllocate.allocate(oder, car, st);
 
 				for(int i = 0; i < car.length; i++){
-					pw.print(car[i].move() + " ");
-					car[i].check(st);
+					int go = car[i].move(st);
+					if(car[i].empty != 0)
+						pw.print(go+" "+car[i].goal+" "+car[i].passenger[0]+" ");
+					else
+						pw.print(go+" -1 -1 ");
+					car[i].renew(st, go);
+					car[i].check();
 				}
 				pw.println();
 
